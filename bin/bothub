@@ -1,0 +1,14 @@
+#!/bin/bash
+# bothub: CLI wrapper for the bothub_harness package.
+# Resolves the project dir from this script's own path (works through symlinks),
+# loads BOTHUB_* exports from ~/.bashrc for non-interactive shells, then runs
+# `python3 -m bothub_harness`.
+set -u
+
+PROJECT_ROOT="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+
+if [ -z "${BOTHUB_TOKEN:-}" ] && [ -f "$HOME/.bashrc" ]; then
+    eval "$(grep -E '^export BOTHUB_(TOKEN|RESP|DOCS|MODEL)=' "$HOME/.bashrc" 2>/dev/null)"
+fi
+
+PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m bothub_harness "$@"
