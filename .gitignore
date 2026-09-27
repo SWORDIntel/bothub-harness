@@ -4,3 +4,7 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+
+# unrelated working files from other projects
+fan_control_qihse_prompt.md
+fable_architecture_response.md
